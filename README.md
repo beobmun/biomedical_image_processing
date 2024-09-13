@@ -16,7 +16,9 @@
   환자와 각 slice에 대한 meta data가 포함된 DICOM 파일을 읽고 2D IFT로 변환된 이미지 파일을 DICOM 파일에 저장하여, meta data와 이미지 파일을 결합하였다. 이를 ‘3D Slicer’ 프로그램을 통해 확인할 수 있다.
 
   ![image](https://github.com/user-attachments/assets/80a296eb-032d-4c8b-bb83-f9dbf5a9a585)
-  ![image](https://github.com/user-attachments/assets/6aee4870-39ce-4791-87ff-42b48aa8e55e)
+  ![image](https://github.com/user-attachments/assets/a9e5aece-0d3a-40df-94b4-c4181a2ba3b9)
+
+
 
 ## Task2
 - Load data files & Repeat direction in Task1.
@@ -37,4 +39,16 @@
      ![image](https://github.com/user-attachments/assets/c85bfc2c-585a-4641-80d1-b167aa7c86fc)
     ![image](https://github.com/user-attachments/assets/1f64ec0f-e774-402a-81e4-d2bfb376a305)
 
+## Task3
+- Load DICOM file & Check the data.
+  
+    Task3의 DICOM file을 불러와서 DICOM파일의 meta data에서 필요한 부분들을 추출한다. 픽셀간의 간격을 위한 ‘PixelSpacing’, slice간의 간격을 위한 ‘SliceThickness’, 각 slice의 pixel 값을 위한 ‘pixel_array’를 추출하여 저장하였다.
+데이터를 확인한 결과, 각 slice는 512×512의 크기를 가지고 있으며, 각 pixel 사이의 간격은 0.832031 mm이고, slice와 slice 사이의 간격은 2.5mm였다. 이 데이터와 pydicom documentation 을 참고하여 transverse, sagittal, coronal 세 방향의 이미지로 시각화 하였다. 
+  ![image](https://github.com/user-attachments/assets/451bd3db-b709-4537-a91c-dcb0c118e50a)
+  ![image](https://github.com/user-attachments/assets/d9f3b420-6ebd-4a01-b8fb-af1a7caf3472)
+- Image processing to segment only bone.
+
+  CT 이미지는 다양한 조직의 밀도 차이로 인해 다양한 밝기를 가진다. 특히, 뼈는 밀도가 높아 다른 조직보다 밝게 나타난다. 이를 이용하여 주변 조직은 나타나지 않고 뼈만 나타나는 임계 값을 찾고 이 임계 값보다 높은 부분만을 추출하여 뼈 부분을 segmentation하였다.
+  ![image](https://github.com/user-attachments/assets/1db4efcd-19e4-4a28-a396-945ce81ab0d3)
+  ![image](https://github.com/user-attachments/assets/95617e5c-6d83-4072-a8f2-6378dc70531d)
 
