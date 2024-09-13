@@ -74,12 +74,43 @@
 
   ![image](https://github.com/user-attachments/assets/3b468f86-d41f-46ec-9208-c595f557372e)
   ![image](https://github.com/user-attachments/assets/fd4fc1a6-b796-4a66-9c0d-cf0616760894)
+## Task4
+- Load and Plot the image.
 
+  Task 4 Image를 load한 후 기본 이미지, R(x, y), G(x, y), B(x, y) 이미지들을 Plot하였다.
 
+   ![image](https://github.com/user-attachments/assets/c16280ba-4239-47f2-b3b4-658e4b856b6d)
+   ![image](https://github.com/user-attachments/assets/8ada8e6c-09e0-4f11-b581-574d835fcbe5)
+- Modify the red component.
 
+  Red component의 임계 값을 180으로 설정하고, 이를 넘지 못하는 R(x, y)의 값들을 0으로 하고, 임계 값을 넘는 것은 유지하였다. G(x, y)와 B(x, y)의 component의 값은 0으로 설정 후 이를 시각화 하였다.
+- Plot the only reddish peppers and reddish chili peppers.
 
+  2번 과정을 통해, 임계 값을 설정하고 이를 필터로 사용함으로써, 색상 필터링이 가능한 것을 알게 되었다. 이를 활용하여, reddish peppers만 필터링할 수 있도록 하였다. RGB 컬러 공간에서의 색을 고려하여, RGB의 임계 값들을 설정하고 조합하여 Yellow, Cyan, Magenta, White의 필터를 만들어 적용시켰다.
 
+  ![image](https://github.com/user-attachments/assets/3b4fe235-2579-4eb0-9b0f-c5c997b8679c)
+  ![image](https://github.com/user-attachments/assets/82475eac-63af-452a-a870-d7f104471955)
 
+  R,G,B를 모두 고려하여 필터를 적용시킨 결과, Figure11.(a)에서 보이던 흰색계열의 마늘, 노란색 계열 파프리카 등을 제거하여 Figure11.(b)와 같이 필터링 할 수 있었다.
+- Convert the RGB image to a HIS image.
 
+  RGB 시스템은 빨강(R), 초록(G), 파랑(B) 세 가지 기본 색상 성분을 조합하여 다양한 색상을 현하는 시스템이다. HIS 시스템은 색상(Hue), 명도(Intensity), 채도(Saturation)를 나타내는 모델이다.
 
+  Python의 ‘cv2’ 라이브러리의 ‘cv2.cvtColor(img, cv2.RGB2HSV)’함수를 활용하면 RGB 이미지를 HSV 이미지로 변환할 수 있다. HSV 시스템은 HIS 시스템과 유사하지만 색의 밝기를 나타내는 부분에서 약간의 차이를 보인다. HIS 시스템의 명도(Intensity)는 색의 밝기를 평균 밝기로 정의하고, HSV 시스템에서 색의 밝기를 나타내는 Value는 색의 밝기를 가장 밝은 색의 강도로 정의한다. 약간의 차이가 있지만, 프로젝트에서 함수 사용의 편의성을 위해 ‘cv2.cvtColor(img, cv2.RGB2HSV)’함수를 사용하여 HIS 시스템 대신 HSV 시스템을 사용했으며, 프로젝트 진행에서 Intensity의 사용 부분을 Value를 사용하여 프로젝트를 진행하였다.
 
+  ![image](https://github.com/user-attachments/assets/ac4a392a-cc9d-483c-955c-8ee2d6608044)
+  ![image](https://github.com/user-attachments/assets/250ca82d-8a22-4c69-ba05-08cee493b6b4)
+
+- Histogram equalization.
+
+  Histogram equalization은 이미지의 명암 대비를 향상시키기 위한 기법으로, 어두운 영역과 밝은 영역을 더 잘 보이도록 한다. 이를 위해 먼저, 각 밝기 값이 전체 픽셀에서 차지하는 비율(PDF)을 구한다. 그 후 각 픽셀 값의 비율을 누적 합계(CDF)를 계산하고, CDF의 값을 0에서 1 사이의 값으로 정규화한다. 이렇게 구해진 밝기 값을 픽셀 값에 매핑하여 이미지의 밝기 값이 균일하게 분포되도록 조정한다.
+- Make a new image so that the intensity value has the Gaussian Dist.
+
+  5번 과정을 통해 Intensity가 균일하게 분포되어 있는 이미지를 기반으로 하여 Gaussian Dist.를 가지는 이미지를 생성하였다. 이때 Gaussian Dist.의 μ=0.5,σ=0.1로 설정하였다.
+
+  ![image](https://github.com/user-attachments/assets/c303bceb-20c9-4c0f-961e-058c50597de0)
+  ![image](https://github.com/user-attachments/assets/8a032129-72e3-48dc-a1ac-2f04c39278aa)
+
+  원본 이미지에서 Histogram Equalization 후 명암이 더욱 선명해지는 것을 확인할 수 있다. Intensity가 Gaussian Dist.를 따르도록 변환한 이미지는 Equalization한 이미지에 비해 어두운 부분이 줄어들고, 밝기가 밝아진 것처럼 보인다.
+  
+  
