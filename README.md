@@ -113,4 +113,45 @@
 
   원본 이미지에서 Histogram Equalization 후 명암이 더욱 선명해지는 것을 확인할 수 있다. Intensity가 Gaussian Dist.를 따르도록 변환한 이미지는 Equalization한 이미지에 비해 어두운 부분이 줄어들고, 밝기가 밝아진 것처럼 보인다.
   
+## Task5
+- Load the ‘idata’ file and flatten.
+
+  ‘idata.npy’ file을 load하고 각 2D frame d(x_i,y_j) ∈R^(224×192)에 ‘flatten()’함수를 적용하여 1D vector d ∈R^(43008×1)로 변환하였다. 이를 다시 쌓아. 2D matrix (43008×900)의 데이터로 만들었다.
+- Extract only blood components.
+
+  2D matrix에 SVD를 적용하여 D=UΣV=∑_j▒〖λ_j u_j v_j 〗로 분해한다. SVD는 2D marix인 D를 세 개의 행렬 U,Σ,V로 분해하는 방법이다. 여기서 U와 V는 직교 행렬로 각각 좌측 특이 벡터, 우측 특이 벡터이고, Σ는 대각행렬로 특이값 행렬이다.  D를 부드러운 조직 C, 혈류 B, 노이즈 N성분으로 분리한다(D=C+B+N ∈R^(43008×900)).
   
+  초음파 도플러 데이터는 부드러운 조직 성분이 큰 에너지를 가지므로, SVD의 앞쪽 특이 공간을 차지한다. 혈류 성분은 상대적으로 작은 에너지를 가지므로, 다음 특이 공간을 차지하며, 노이즈 성분의 에너지는 매우 작아 마지막 특이 공간을 차지한다. 따라서 적절한 임계 값을 통해 조직과 노이즈 사이의 혈류 성분만을 추출할 수 있다. 특이 공간 Σ을 plot을 그려 대략적인 임계 값의 위치를 잡고 임계 값을 조금씩 바꾸며 실험적으로 임계 값을 선택하였다.
+  
+  ![image](https://github.com/user-attachments/assets/e03358a1-dccf-424b-9e5e-f221e4954eb7)
+  ![image](https://github.com/user-attachments/assets/e7139ca1-b2b1-4ac9-bfc2-9ae7d77e036f)
+
+  혈류 성분 추출 데이터의 시각화 후 불필요한 노이즈들을 제거하기 위해 밝기를 기준으로 한 필터를 만들어 적용하여 노이즈를 제거하였다.
+  
+  ![image](https://github.com/user-attachments/assets/fe3a5674-5734-4565-9d96-895c5d683bd7)
+  ![image](https://github.com/user-attachments/assets/9dd4689c-c4bd-4169-ac8c-b74fac210792)
+
+## Conclusion
+  이번 의료영상처리 과제에서는 다양한 이미지 처리 기술과 이론적 개념을 적용하여 여러 과제들을 해결하였다.
+- Task 1: MRI 이미지 재구성
+
+  k-space 데이터를 이용하여 MRI 이미지를 재구성하는 것이 목표였다. 이를 위해 real part와 imaginary part를 결합하고, ‘fftshift’함수를 사용하여 주파수 성분의 배열을 조정하고, 2D Inverse Fourier Transform(IFT)을 적용하였다. 이 과정을 통해 주파수 도메인 데이터를 공간 도메인 이미지로 변환하여 MRI 데이터를 시각화하였다.
+
+- Task 2: Artifacts 제거
+
+  재구성된 이미지에서 대각선 artifacts를 제거하였다. k-space 데이터에서 이러한 artifacts에 해당하는 고강도 지점을 찾아 제거함으로써 이미지를 깨끗하게 만들었다. 이 과정을 통해 공간 도메인과 주파수 도메인의 관계를 이해하고, 이미지 도메인에서 특정 패턴이 k-space에서 어떻게 나타나는지에 대한 이해를 높일 수 있었다. 
+그러나 대각선 artifacts 제거를 위해 고강도 지점을 0으로 만들어 원본 데이터와는 일부 달라지는 점들이 있었다. 원본 데이터를 훼손하지 않으며 artifacts 제거를 위한 다양한 방법들을 추후 더 공부할 필요성이 있다.
+
+- Task3: CT 이미지에서 뼈 세그멘테이션
+
+  CT 이미지에서 뼈 구조를 segmentation하였다. 뼈는 밀도가 높아 더 밝게 나타난다는 점을 고려하여 임계 값을 적용하여 뼈 영역을 분리하였다. 또한, 2D wavelet Transform을 사용하여 edge부분을 추출하였다. 
+
+- Task4: Color Image processing
+
+  RGB 시스템에서의 이미지의 components들을 조절하여 원하는 색상의 이미지를 추출하였다. 또, RGB 시스템의 이미지를 HIS 시스템으로 변환하고, Intensity를 원하는 분포를 따르도록 조절하여 이미지의 명암을 조절하였다. 
+
+- Task5: 초음파 도플러 데이터에서 혈류 성분 추출
+
+  초음파 도플러 데이터에서 불필요한 조직 성분을 필터링하여 혈류 성분만을 추출하였다. 특이값 분해(SVD)를 적용하고 적절한 임계값을 선택하여 혈류 성분을 분리하였다.
+
+
